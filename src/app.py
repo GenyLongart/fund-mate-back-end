@@ -5,7 +5,7 @@ from flask_jwt_extended import JWTManager
 from flask_cors import CORS
 from dotenv import load_dotenv
 from .models import db
-from routes.main import api 
+from .routes.main import api 
 
 load_dotenv()
 
