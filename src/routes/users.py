@@ -54,7 +54,7 @@ def register_user():
 
     if new_user:
         # Serialize the new user using the UserSchema and return a success response
-        serialized_user = user_schema.dump(new_user)
+        serialized_user = UserSchema(exclude=("password",)).dump(new_user)
         return jsonify(serialized_user), 201
     else:
         return jsonify({"error": "Registration failed, please try again"}),
