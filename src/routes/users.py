@@ -3,6 +3,7 @@ from schemas.user_schema import UserSchema
 from schemas.login_schema import LoginSchema
 from services.user_service import UserService
 from marshmallow import ValidationError
+import json
 
 bp = Blueprint('users', __name__)
 user_schema = UserSchema()
@@ -38,8 +39,22 @@ def login():
 @bp.route('/register', methods=['POST'])
 def register_user():
     try:
+        # Check if the 'templateRequest' field is in the form data
+        if 'loginRequest' not in request.form:
+            return jsonify({"msg": "JSON data 'loginRequest' is required!"}), 400
+
+        elif 'identityFile' not in request.files:
+            return jsonify({"msg": "File 'identityFile' is required!"}), 400
+        
+        elif 'dicomFile' not in request.files:
+            return jsonify({"msg": "File 'dicomFile' is required!"}), 400 
+        
+        user_data = json.loads(request.form['loginRequest'])
+        user_data['identity']['identityFile'] = request.files['identityFile']
+        user_data['dicom']['dicomFile'] = request.files['dicomFile']
+        
         # Deserialize the incoming JSON data using the UserSchema
-        user_data = user_schema.load(request.json)
+        user_data = user_schema.load(user_data)
 
     # Check if deserialization was successful and validate the data
     except ValidationError as err:
@@ -57,4 +72,33 @@ def register_user():
         serialized_user = UserSchema(exclude=("password",)).dump(new_user)
         return jsonify(serialized_user), 201
     else:
-        return jsonify({"error": "Registration failed, please try again"}),
+        return jsonify({"error": "Registration failed, please try again"}), 404
+    
+@bp.route('/<int:user_id>', methods=['GET'])
+def get_user(user_id):
+    try:
+        # Get a user using the UserService
+        user = user_service.get_user(user_id)
+        print(user)
+    
+        if user:
+            # Serialize the new user using the UserSchema and return a success response
+            serialized_user = UserSchema(exclude=("password",)).dump(user)
+            return jsonify(serialized_user), 200
+        else:
+            return jsonify({"error": "Failed to get user, please try again"}), 404
+    except Exception as e:
+        return jsonify({"message": "User get failed: " + str(e)}), 500
+    
+
+@bp.route('/<int:user_id>', methods=['DELETE'])
+def delete_user(user_id):
+    try:
+        noUser = user_service.deleteUser(user_id)
+        if noUser:
+            return jsonify({"message": "User deleted successfully"}), 200
+        else:
+            return jsonify({"message": "User does not exist to delete"}), 404
+    except Exception as e:
+        return jsonify({"message": "User deletion failed: " + str(e)}), 500
+
