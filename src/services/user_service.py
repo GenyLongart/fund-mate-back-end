@@ -11,6 +11,24 @@ class UserService:
         # Check if a user with the given username exists
         return User.query.filter_by(username=_username).first() is not None
 
+    def update_phone_number(self, user, phone_data):
+        user.phoneNumber = phone_data
+        db.session.commit()
+        return user
+    
+    def update_profile_picture(self, user, profile_picture):
+        #upload photos here
+        uploadImage = PhotoUploadService()
+        uploadResponseProfilePicture = uploadImage.uploadPhoto(profile_picture, user.username + "/profile")
+
+        # handle error upload here
+        if not uploadResponseProfilePicture['secure_url']:
+            raise Exception(f"Cloudinary API error: {str(uploadResponseProfilePicture)}")
+        
+        user.profilePictureLink = uploadResponseProfilePicture['secure_url']
+        db.session.commit()
+        return user
+
     def create_user(self, user_data):
 
         # Extract nested data
@@ -38,6 +56,8 @@ class UserService:
 
         # Create a new user and save it to the database
         new_user = User(**user_data)
+        # include the default profile picture
+        new_user.profilePictureLink = uploadImage.getDefaultProfilePicture()
 
         # Create BankDetails, Identity, Lender and Debtor instances and associate them with the new user
         bank_details = BankDetails(**bank_details_data)
@@ -87,7 +107,6 @@ class UserService:
         #delete photos here
         deletePhotoService = PhotoUploadService()
         deletePhotoResponse = deletePhotoService.deleteEntireUserFolder(user_found.username)
-        print(deletePhotoResponse)
 
         # handle error upload here
         if isinstance(deletePhotoResponse, cloudinary_exceptions.Error):

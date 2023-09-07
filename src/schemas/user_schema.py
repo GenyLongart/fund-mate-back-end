@@ -10,6 +10,7 @@ class UserSchema(Schema):
     lastName = fields.Str(required=True, validate=validate.Length(max=50))
     email = fields.Email(required=True, validate=validate.Length(max=100))
     phoneNumber = fields.Str(required=True, validate=validate.Length(max=20))
+    profilePictureLink = fields.Str()
 
     # Define nested fields for related objects
     googleOAuth = fields.Nested('GoogleOAuthSchema', exclude=('user',), allow_none=True)
@@ -39,7 +40,7 @@ class IdentitySchema(Schema):
     @validates_schema
     def masterSchemaInvoke(self, in_data, **kwargs):
         masterSchema = MasterSchema()
-        return masterSchema.validate_uploaded_file(in_data, "identityFile")
+        return masterSchema.validate_uploaded_file(in_data, "identityFile", ["application/pdf", "image/png", "image/jpeg"])
 
 class DicomSchema(Schema):
     dicomID = fields.Int(dump_only=True)
@@ -51,7 +52,7 @@ class DicomSchema(Schema):
     @validates_schema
     def masterSchemaInvoke(self, in_data, **kwargs):
         masterSchema = MasterSchema()
-        return masterSchema.validate_uploaded_file(in_data, "dicomFile")
+        return masterSchema.validate_uploaded_file(in_data, "dicomFile", ["application/pdf", "image/png", "image/jpeg"])
 
 class BankDetailsSchema(Schema):
     bankID = fields.Int(dump_only=True)
@@ -70,29 +71,3 @@ class LenderSchema(Schema):
 class DebtorSchema(Schema):
     debtorID = fields.Int(dump_only=True)
     user = fields.Nested('UserSchema', exclude=('debtor',), allow_none=True)
-
-# validation for uploaded files
-def validate_uploaded_file(self, in_data, **kwargs):
-        errors = {}
-        file: FileStorage = in_data.get("identityFile", None)
-
-        if type(file) != FileStorage:
-            errors["identityFile"] = [
-                f"Invalid content. Only PDF, PNG, JPG/JPEG files accepted"]
-            raise ValidationError(errors)
-
-        elif file.content_type not in {"image/jpeg", "image/png", "application/pdf"}:
-            errors["identityFile"] = [
-                f"Invalid file_type: {file.content_type}. Only PDF, PNG, JPG/JPEG images accepted."]
-            raise ValidationError(errors)
-        
-        # Define the maximum allowed file size in bytes (e.g., 10 MB)
-        max_file_size = 10 * 1024 * 1024  # 10 MB in bytes
-
-        # Check if the file size exceeds the maximum allowed size
-        if file.content_length is not None and file.content_length > max_file_size:
-            errors["identityFile"] = [f"File size exceeds the maximum allowed size of {max_file_size} bytes."]
-            raise ValidationError(errors)
-
-        return in_data
-

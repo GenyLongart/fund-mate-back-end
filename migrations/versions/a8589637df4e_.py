@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 4279546d0280
+Revision ID: a8589637df4e
 Revises: 
-Create Date: 2023-09-05 15:57:37.083232
+Create Date: 2023-09-07 13:57:41.593417
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '4279546d0280'
+revision = 'a8589637df4e'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -26,6 +26,7 @@ def upgrade():
     sa.Column('lastName', sa.String(length=50), nullable=False),
     sa.Column('email', sa.String(length=100), nullable=False),
     sa.Column('phoneNumber', sa.String(length=20), nullable=False),
+    sa.Column('profilePictureLink', sa.String(), nullable=False),
     sa.PrimaryKeyConstraint('userID'),
     sa.UniqueConstraint('email'),
     sa.UniqueConstraint('username')
@@ -36,8 +37,8 @@ def upgrade():
     sa.Column('bankCardNumber', sa.String(length=16), nullable=False),
     sa.Column('bankAccountNumber', sa.String(length=8), nullable=False),
     sa.Column('bankSortCode', sa.String(length=6), nullable=False),
-    sa.Column('bankIssueDate', sa.DateTime(), nullable=False),
-    sa.Column('bankExpiryDate', sa.DateTime(), nullable=False),
+    sa.Column('bankIssueDate', sa.Date(), nullable=False),
+    sa.Column('bankExpiryDate', sa.Date(), nullable=False),
     sa.Column('userID', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['userID'], ['User.userID'], ),
     sa.PrimaryKeyConstraint('bankID')
@@ -47,6 +48,14 @@ def upgrade():
     sa.Column('userID', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['userID'], ['User.userID'], ),
     sa.PrimaryKeyConstraint('debtorID')
+    )
+    op.create_table('Dicom',
+    sa.Column('dicomID', sa.Integer(), autoincrement=True, nullable=False),
+    sa.Column('dicomDocumentLink', sa.String(), nullable=False),
+    sa.Column('dicomFileName', sa.String(length=50), nullable=False),
+    sa.Column('userID', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['userID'], ['User.userID'], ),
+    sa.PrimaryKeyConstraint('dicomID')
     )
     op.create_table('GoogleOAuth',
     sa.Column('googleID', sa.Integer(), autoincrement=True, nullable=False),
@@ -82,6 +91,7 @@ def downgrade():
     op.drop_table('Lender')
     op.drop_table('Identity')
     op.drop_table('GoogleOAuth')
+    op.drop_table('Dicom')
     op.drop_table('Debtor')
     op.drop_table('BankDetails')
     op.drop_table('User')

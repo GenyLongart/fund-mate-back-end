@@ -12,6 +12,7 @@ class User(Base):
     lastName = Column(String(50), nullable=False)
     email = Column(String(100), nullable=False, unique=True)
     phoneNumber = Column(String(20), nullable=False)
+    profilePictureLink = Column(String(), nullable=False)
 
     googleOAuth = relationship('GoogleOAuth', backref='user', uselist=False, cascade="all, delete-orphan")
     identity = relationship('Identity', backref='user', uselist=False, cascade="all, delete-orphan")

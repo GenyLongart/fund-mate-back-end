@@ -6,7 +6,8 @@ from flask_jwt_extended import JWTManager
 from flask_cors import CORS
 from dotenv import load_dotenv
 from models.base import db  # Import the SQLAlchemy instance from the new structure
-from routes.users import bp as users_bp  # Import the blueprint for user-related routes
+from routes.user import bp as user_bp  # Import the blueprint for user-related routes
+from routes.users import bp as users_bp
 
 load_dotenv()
 
@@ -34,6 +35,7 @@ cloudinary.config(
 )
 
 # Add the user-related blueprint
+app.register_blueprint(user_bp, url_prefix='/user')
 app.register_blueprint(users_bp, url_prefix='/users')
 
 if __name__ == '__main__':
