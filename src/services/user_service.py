@@ -1,7 +1,8 @@
-from models import User, BankDetails, Identity, Lender, Debtor
+from models import User, BankDetails, Identity, Dicom, Lender, Debtor
 from models.base import db
 import datetime
-from photo_upload_service import PhotoUploadService
+from .photo_upload_service import PhotoUploadService
+from cloudinary import exceptions as cloudinary_exceptions
 from flask_jwt_extended import create_access_token
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -15,16 +16,22 @@ class UserService:
         # Extract nested data
         bank_details_data = user_data.pop('bankDetails')
         identity_data = user_data.pop('identity')
+        dicom_data = user_data.pop('dicom')
 
+        #upload photos here
         uploadImage = PhotoUploadService()
-        uploadPhotoResponse = uploadImage.uploadPhoto(identity_data.identityFile, user_data["username"] + "/" + identity_data["identityFileName"])
-
+        uploadPhotoResponseIdentity = uploadImage.uploadPhoto(identity_data['identityFile'], user_data["username"] + "/identification")
+        uploadPhotoResponseDicom = uploadImage.uploadPhoto(dicom_data['dicomFile'], user_data["username"] + "/dicom")
         # handle error upload here
-        if not uploadPhotoResponse.status_code == 200 or not uploadPhotoResponse['secure_url']:
+        if not uploadPhotoResponseIdentity['secure_url'] or not uploadPhotoResponseDicom['secure_url']:
             return
         
-        # modify the file path to point towards the secure url in cloudinary
-        identity_data['identityDocumentLink'] = uploadPhotoResponse['secure_url']
+        # we don't need the images anymore, they are in cloud storage
+        del identity_data['identityFile']
+        del dicom_data['dicomFile'] 
+        # modify the file paths to point towards the secure urls in cloudinary
+        identity_data['identityDocumentLink'] = uploadPhotoResponseIdentity['secure_url']
+        dicom_data['dicomDocumentLink'] = uploadPhotoResponseDicom['secure_url']
 
         # generate the password hash
         user_data["password"] = generate_password_hash(user_data["password"])
@@ -35,12 +42,14 @@ class UserService:
         # Create BankDetails, Identity, Lender and Debtor instances and associate them with the new user
         bank_details = BankDetails(**bank_details_data)
         identity = Identity(**identity_data)
+        dicom = Dicom(**dicom_data)
         lender = Lender()
         debtor = Debtor()
 
         # Associate bank_details, identity, lender and debtor with the new_user
         new_user.bankDetails = bank_details
         new_user.identity = identity
+        new_user.dicom = dicom
         new_user.lender = lender
         new_user.debtor = debtor
 
@@ -65,3 +74,26 @@ class UserService:
         }
 
         return result
+    
+    def get_user(self, _userID):
+        return User.query.filter_by(userID=_userID).first()
+
+    def deleteUser(self, _userID):
+        user_found = User.query.filter_by(userID=_userID).first()
+
+        if not user_found:
+            return False
+        
+        #delete photos here
+        deletePhotoService = PhotoUploadService()
+        deletePhotoResponse = deletePhotoService.deleteEntireUserFolder(user_found.username)
+        print(deletePhotoResponse)
+
+        # handle error upload here
+        if isinstance(deletePhotoResponse, cloudinary_exceptions.Error):
+            raise Exception(f"Cloudinary API error: {str(deletePhotoResponse)}")
+        
+        db.session.delete(user_found)
+        db.session.commit()
+
+        return True

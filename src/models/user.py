@@ -15,6 +15,7 @@ class User(Base):
 
     googleOAuth = relationship('GoogleOAuth', backref='user', uselist=False, cascade="all, delete-orphan")
     identity = relationship('Identity', backref='user', uselist=False, cascade="all, delete-orphan")
+    dicom = relationship('Dicom', backref='user', uselist=False, cascade="all, delete-orphan")
     bankDetails = relationship('BankDetails', backref='user', uselist=False, cascade="all, delete-orphan")
     lender = relationship('Lender', backref='user', uselist=False, cascade="all, delete-orphan")
     debtor = relationship('Debtor', backref='user', uselist=False, cascade="all, delete-orphan")
