@@ -19,3 +19,6 @@ class PhotoUploadService:
             return response
         except cloudinary_exceptions.Error as e:
             return e
+        
+    def getDefaultProfilePicture(self):
+        return "https://res.cloudinary.com/dkh2tkyhc/image/upload/v1694102282/public/profile/defaultProfilePicture.png"
