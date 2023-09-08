@@ -1,5 +1,5 @@
 from marshmallow import Schema, fields, validates_schema
-from .master_schema import MasterSchema
+from ..master_schema import MasterSchema
 
 class ProfilePictureSchema(Schema):
     profilePictureFile = fields.Field(metadata={'type': 'string', 'format': 'byte'}, required=True)

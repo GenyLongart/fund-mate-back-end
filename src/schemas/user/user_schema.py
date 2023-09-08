@@ -1,6 +1,5 @@
-from marshmallow import Schema, fields, validate, ValidationError, validates_schema
-from werkzeug.datastructures import FileStorage
-from .master_schema import MasterSchema
+from marshmallow import Schema, fields, validate, validates_schema
+from ..master_schema import MasterSchema
 
 class UserSchema(Schema):
     userID = fields.Int(dump_only=True)

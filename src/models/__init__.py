@@ -1,10 +1,19 @@
-from .user import User
-from .googleOAuth import GoogleOAuth
-from .identity import Identity
-from .bankDetails import BankDetails
-from .lender import Lender
-from .debtor import Debtor
-from .dicom import Dicom
+from .contract import Contract
+from .debtor.debtor import Debtor
+from .lender.lender import Lender
+from .loan.loanAdvertisement import LoanAdvertisement
+from .loan.loanConditions import LoanConditions
+from .loan.loanOffer import LoanOffer
+from .payment.paymentStatus import PaymentStatus
+from .payment.paymentFrequency import PaymentFrequency
+from .transaction.transaction import Transaction
+from .transaction.transactionPayment import TransactionPayment
+from .transaction.transactionStatus import TransactionStatus
+from .user.user import User
+from .user.googleOAuth import GoogleOAuth
+from .user.identity import Identity
+from .user.bankDetails import BankDetails
+from .user.dicom import Dicom
 
 # list of all models
-all_models = [User, GoogleOAuth, Identity, BankDetails, Lender, Debtor, Dicom]
+all_models = [Contract, User, GoogleOAuth, Identity, BankDetails, Lender, Debtor, Dicom, LoanAdvertisement, LoanConditions, LoanOffer, PaymentStatus, PaymentFrequency, Transaction, TransactionPayment, TransactionStatus]

@@ -1,11 +1,11 @@
 from flask import Blueprint, request, jsonify
-from schemas.user_schema import UserSchema
-from schemas.login_schema import LoginSchema
-from schemas.bank_schema import BankSchema
-from schemas.phone_schema import PhoneSchema
-from schemas.profile_picture_schema import ProfilePictureSchema
-from services.user_service import UserService
-from services.bank_service import BankService
+from schemas.user.user_schema import UserSchema
+from schemas.user.login_schema import LoginSchema
+from schemas.user.bank_schema import BankSchema
+from schemas.user.phone_schema import PhoneSchema
+from schemas.user.profile_picture_schema import ProfilePictureSchema
+from services.user.user_service import UserService
+from services.user.bank_service import BankService
 from marshmallow import ValidationError
 from flask_jwt_extended import jwt_required, get_jwt_identity
 import json

@@ -1,7 +1,7 @@
 from models import User, BankDetails, Identity, Dicom, Lender, Debtor
 from models.base import db
 import datetime
-from .photo_upload_service import PhotoUploadService
+from ..master.photo_upload_service import PhotoUploadService
 from cloudinary import exceptions as cloudinary_exceptions
 from flask_jwt_extended import create_access_token
 from werkzeug.security import generate_password_hash, check_password_hash

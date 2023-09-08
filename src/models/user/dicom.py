@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, ForeignKey
-from .base import Base
+from ..base import Base
 
 class Dicom(Base):
     __tablename__ = 'Dicom'
