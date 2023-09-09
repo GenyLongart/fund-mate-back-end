@@ -8,6 +8,9 @@ from dotenv import load_dotenv
 from models.base import db  # Import the SQLAlchemy instance from the new structure
 from routes.user import bp as user_bp  # Import the blueprint for user-related routes
 from routes.users import bp as users_bp
+from routes.activeLoan import bp as activeLoan_bp
+from routes.loans import bp as loans_bp
+from routes.admin import bp as admin_bp
 
 load_dotenv()
 
@@ -37,6 +40,9 @@ cloudinary.config(
 # Add the user-related blueprint
 app.register_blueprint(user_bp, url_prefix='/user')
 app.register_blueprint(users_bp, url_prefix='/users')
+app.register_blueprint(activeLoan_bp, url_prefix='/active-loan')
+app.register_blueprint(loans_bp, url_prefix='/loans')
+app.register_blueprint(admin_bp, url_prefix='/admin')
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=8081)
