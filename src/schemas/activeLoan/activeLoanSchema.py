@@ -1,8 +1,8 @@
 from marshmallow import Schema, fields, validate
 from ..master_schema import MasterSchema
 
-class TransactionSchema(Schema):
-    transactionID = fields.Int(dump_only=True)
+class ActiveLoanSchema(Schema):
+    activeLoanID = fields.Int(dump_only=True)
     createdAt = fields.Date(required=True)
     updatedAt = fields.Date(required=True)
     originalAmount = fields.Number(required=True)

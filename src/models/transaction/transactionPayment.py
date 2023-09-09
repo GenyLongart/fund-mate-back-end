@@ -5,7 +5,7 @@ class TransactionPayment(Base):
     __tablename__ = 'TransactionPayment'
 
     transactionPaymentID = Column(Integer, primary_key=True, autoincrement=True)
-    transactionID = Column(Integer, ForeignKey('Transaction.transactionID'), nullable=False)
+    activeLoanID = Column(Integer, ForeignKey('ActiveLoan.activeLoanID'), nullable=False)
     amountPaid = Column(Numeric, nullable=False)
     datePaid = Column(DateTime(), nullable=False)
     paymentStatus = Column(Integer, ForeignKey('PaymentStatus.paymentStatusID'), nullable=False)
