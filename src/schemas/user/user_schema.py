@@ -64,7 +64,7 @@ class BankDetailsSchema(Schema):
     user = fields.Nested('UserSchema', exclude=('bankDetails',), allow_none=True)
 
 class LenderSchema(Schema):
-    lenderID = fields.Int(dump_only=True)
+    lenderID = fields.Int()
     user = fields.Nested('UserSchema', exclude=('lender',), allow_none=True)
 
 class DebtorSchema(Schema):

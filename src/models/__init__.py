@@ -6,7 +6,6 @@ from .loan.loanConditions import LoanConditions
 from .loan.loanOffer import LoanOffer
 from .payment.paymentStatus import PaymentStatus
 from .payment.paymentFrequency import PaymentFrequency
-from .payment.paymentType import PaymentType
 from .transaction.activeLoan import ActiveLoan
 from .transaction.transactionPayment import TransactionPayment
 from .transaction.transactionStatus import TransactionStatus
@@ -17,4 +16,4 @@ from .user.bankDetails import BankDetails
 from .user.dicom import Dicom
 
 # list of all models
-all_models = [Contract, User, GoogleOAuth, Identity, BankDetails, Lender, Debtor, Dicom, LoanAdvertisement, LoanConditions, LoanOffer, PaymentStatus, PaymentFrequency, PaymentType, ActiveLoan, TransactionPayment, TransactionStatus]
+all_models = [Contract, User, GoogleOAuth, Identity, BankDetails, Lender, Debtor, Dicom, LoanAdvertisement, LoanConditions, LoanOffer, PaymentStatus, PaymentFrequency, ActiveLoan, TransactionPayment, TransactionStatus]
