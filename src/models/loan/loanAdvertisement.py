@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, String, Numeric, DateTime, Boolean, ForeignKey
+from sqlalchemy.orm import relationship
 from ..base import Base
 
 class LoanAdvertisement(Base):
@@ -12,5 +13,8 @@ class LoanAdvertisement(Base):
     negotiable = Column(Boolean, nullable=False, unique=True)
     createdAt = Column(DateTime(), nullable=False)
     updatedAt = Column(DateTime(), nullable=False )
-    paymentType = Column(Integer, ForeignKey('PaymentType.paymentTypeID'), nullable=False)
+    paymentFrequencyID = Column(Integer, ForeignKey('PaymentFrequency.paymentFrequencyID'), nullable=False)
+    paymentFrequency = relationship("PaymentFrequency", back_populates="loanAdvertisements")
     lenderID = Column(Integer, ForeignKey('Lender.lenderID'), nullable=False)
+    lender = relationship("Lender", back_populates="loanAdvertisements")
+    loanOffers = relationship("LoanOffer", back_populates="loanAdvertisement")

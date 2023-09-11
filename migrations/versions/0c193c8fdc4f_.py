@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 64a749603fbc
+Revision ID: 0c193c8fdc4f
 Revises: 
-Create Date: 2023-09-09 16:05:30.328431
+Create Date: 2023-09-10 16:48:54.554756
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '64a749603fbc'
+revision = '0c193c8fdc4f'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -106,14 +106,16 @@ def upgrade():
     op.create_table('LoanAdvertisement',
     sa.Column('loanAdvertisementID', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('amount', sa.Numeric(precision=100), nullable=False),
-    sa.Column('createdAt', sa.DateTime(), nullable=False),
-    sa.Column('updatedAt', sa.DateTime(), nullable=False),
     sa.Column('interest', sa.Integer(), nullable=False),
-    sa.Column('negotiable', sa.Boolean(), nullable=False),
     sa.Column('description', sa.String(length=200), nullable=True),
     sa.Column('dueDate', sa.DateTime(), nullable=False),
+    sa.Column('negotiable', sa.Boolean(), nullable=False),
+    sa.Column('createdAt', sa.DateTime(), nullable=False),
+    sa.Column('updatedAt', sa.DateTime(), nullable=False),
+    sa.Column('paymentFrequencyID', sa.Integer(), nullable=False),
     sa.Column('lenderID', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['lenderID'], ['Lender.lenderID'], ),
+    sa.ForeignKeyConstraint(['paymentFrequencyID'], ['PaymentFrequency.paymentFrequencyID'], ),
     sa.PrimaryKeyConstraint('loanAdvertisementID'),
     sa.UniqueConstraint('negotiable')
     )
@@ -149,10 +151,10 @@ def upgrade():
     sa.Column('loanAdvertisementID', sa.Integer(), nullable=False),
     sa.Column('lenderID', sa.Integer(), nullable=False),
     sa.Column('debtorID', sa.Integer(), nullable=False),
-    sa.Column('createdAt', sa.DateTime(), nullable=False),
-    sa.Column('updatedAt', sa.DateTime(), nullable=False),
     sa.Column('interest', sa.Integer(), nullable=False),
     sa.Column('dueDate', sa.DateTime(), nullable=False),
+    sa.Column('createdAt', sa.DateTime(), nullable=False),
+    sa.Column('updatedAt', sa.DateTime(), nullable=False),
     sa.Column('paymentFrequency', sa.Integer(), nullable=False),
     sa.Column('offerStatus', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['debtorID'], ['Debtor.debtorID'], ),

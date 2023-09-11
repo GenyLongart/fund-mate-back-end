@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, DateTime, Numeric, ForeignKey
+from sqlalchemy.orm import relationship
 from ..base import Base
 
 class ActiveLoan(Base):
@@ -14,6 +15,6 @@ class ActiveLoan(Base):
     amountDue = Column(Numeric, nullable=False)
     interest = Column(Integer, nullable=False)
     dueDate = Column(DateTime(), nullable=False)
-    paymentType = Column(Integer, ForeignKey('PaymentType.paymentTypeID'), nullable=False)
-    paymentFrequency = Column(Integer, ForeignKey('PaymentFrequency.paymentFrequencyID'), nullable=False)
+    paymentFrequencyID = Column(Integer, ForeignKey('PaymentFrequency.paymentFrequencyID'), nullable=False)
+    paymentFrequency = relationship("PaymentFrequency", back_populates="activeLoans")
     transactionStatus = Column(Integer, ForeignKey('TransactionStatus.transactionStatusID'), nullable=False)

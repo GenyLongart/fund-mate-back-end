@@ -7,6 +7,23 @@ from flask_jwt_extended import create_access_token
 from werkzeug.security import generate_password_hash, check_password_hash
 
 class UserService:
+    def get_user(self, _userID):
+        return User.query.filter_by(userID=_userID).first()
+    
+    def get_user_from_lender_id(self, _lenderID):
+        lender = Lender.query.filter_by(lenderID=_lenderID).first()
+        if lender:
+            return User.query.filter_by(userID=lender.userID).first()
+        else:
+            raise Exception("error: No such Lender ID")
+        
+    def get_user_from_debtor_id(self, _debtorID):
+        debtor = Debtor.query.filter_by(debtorID=_debtorID).first()
+        if debtor:
+            return User.query.filter_by(userID=debtor.userID).first()
+        else:
+            raise Exception("error: No such Debtor ID")   
+
     def username_exists(self, _username):
         # Check if a user with the given username exists
         return User.query.filter_by(username=_username).first() is not None
@@ -94,9 +111,6 @@ class UserService:
         }
 
         return result
-    
-    def get_user(self, _userID):
-        return User.query.filter_by(userID=_userID).first()
 
     def deleteUser(self, _userID):
         user_found = User.query.filter_by(userID=_userID).first()
