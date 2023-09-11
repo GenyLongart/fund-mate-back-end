@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 0c193c8fdc4f
+Revision ID: cb67f82ffaff
 Revises: 
-Create Date: 2023-09-10 16:48:54.554756
+Create Date: 2023-09-11 10:53:58.841576
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '0c193c8fdc4f'
+revision = 'cb67f82ffaff'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -130,12 +130,12 @@ def upgrade():
     sa.Column('amountDue', sa.Numeric(), nullable=False),
     sa.Column('interest', sa.Integer(), nullable=False),
     sa.Column('dueDate', sa.DateTime(), nullable=False),
-    sa.Column('paymentFrequency', sa.Integer(), nullable=False),
+    sa.Column('paymentFrequencyID', sa.Integer(), nullable=False),
     sa.Column('transactionStatus', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['debtorID'], ['Debtor.debtorID'], ),
     sa.ForeignKeyConstraint(['lenderID'], ['Lender.lenderID'], ),
     sa.ForeignKeyConstraint(['loanAdvertisementID'], ['LoanAdvertisement.loanAdvertisementID'], ),
-    sa.ForeignKeyConstraint(['paymentFrequency'], ['PaymentFrequency.paymentFrequencyID'], ),
+    sa.ForeignKeyConstraint(['paymentFrequencyID'], ['PaymentFrequency.paymentFrequencyID'], ),
     sa.ForeignKeyConstraint(['transactionStatus'], ['TransactionStatus.transactionStatusID'], ),
     sa.PrimaryKeyConstraint('activeLoanID')
     )
@@ -149,19 +149,20 @@ def upgrade():
     op.create_table('LoanOffer',
     sa.Column('loanOfferID', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('loanAdvertisementID', sa.Integer(), nullable=False),
-    sa.Column('lenderID', sa.Integer(), nullable=False),
     sa.Column('debtorID', sa.Integer(), nullable=False),
+    sa.Column('lenderID', sa.Integer(), nullable=False),
     sa.Column('interest', sa.Integer(), nullable=False),
+    sa.Column('comment', sa.String(), nullable=True),
     sa.Column('dueDate', sa.DateTime(), nullable=False),
     sa.Column('createdAt', sa.DateTime(), nullable=False),
     sa.Column('updatedAt', sa.DateTime(), nullable=False),
-    sa.Column('paymentFrequency', sa.Integer(), nullable=False),
-    sa.Column('offerStatus', sa.Integer(), nullable=False),
+    sa.Column('paymentFrequencyID', sa.Integer(), nullable=False),
+    sa.Column('offerStatusID', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['debtorID'], ['Debtor.debtorID'], ),
     sa.ForeignKeyConstraint(['lenderID'], ['Lender.lenderID'], ),
     sa.ForeignKeyConstraint(['loanAdvertisementID'], ['LoanAdvertisement.loanAdvertisementID'], ),
-    sa.ForeignKeyConstraint(['offerStatus'], ['OfferStatus.offerStatusID'], ),
-    sa.ForeignKeyConstraint(['paymentFrequency'], ['PaymentFrequency.paymentFrequencyID'], ),
+    sa.ForeignKeyConstraint(['offerStatusID'], ['OfferStatus.offerStatusID'], ),
+    sa.ForeignKeyConstraint(['paymentFrequencyID'], ['PaymentFrequency.paymentFrequencyID'], ),
     sa.PrimaryKeyConstraint('loanOfferID')
     )
     op.create_table('Contract',
