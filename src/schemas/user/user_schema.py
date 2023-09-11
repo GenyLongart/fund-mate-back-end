@@ -56,12 +56,10 @@ class DicomSchema(Schema):
 class BankDetailsSchema(Schema):
     bankID = fields.Int(dump_only=True)
     bankName = fields.Str(required=True)
-    bankCardNumber = fields.Str(required=True, validate=validate.Length(min=16, max=16))
     bankAccountNumber = fields.Str(required=True, validate=validate.Length(min=8, max=8))
-    bankSortCode = fields.Str(required=True, validate=validate.Length(min=6, max=6))
-    bankIssueDate = fields.Date(required=True)
-    bankExpiryDate = fields.Date(required=True)
     user = fields.Nested('UserSchema', exclude=('bankDetails',), allow_none=True)
+    bank = fields.Nested('AccountTypeSchema')
+    accountType = fields.Nested('BankSchema')
 
 class LenderSchema(Schema):
     lenderID = fields.Int()
