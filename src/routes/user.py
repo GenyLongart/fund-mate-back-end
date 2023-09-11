@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from schemas.user.user_schema import UserSchema
 from schemas.user.login_schema import LoginSchema
-from schemas.user.bank_schema import BankSchema
+from schemas.user.user_schema import BankDetailsSchema
 from schemas.user.phone_schema import PhoneSchema
 from schemas.user.profile_picture_schema import ProfilePictureSchema
 from services.user.user_service import UserService
@@ -13,7 +13,7 @@ import json
 bp = Blueprint('user', __name__)
 user_schema = UserSchema()
 login_schema = LoginSchema()
-bank_schema = BankSchema()
+bank_schema = BankDetailsSchema()
 phone_schema = PhoneSchema()
 profile_picture_schema = ProfilePictureSchema()
 user_service = UserService()
