@@ -115,7 +115,7 @@ def add_account_type():
 @jwt_required()
 def get_account_types():
     try:
-        account_types = account_type_service.add_account_type()
+        account_types = account_type_service.get_all_account_types()
         if account_types:
             serialized_account_types = AccountTypeSchema(many=True).dump(account_types)
             return jsonify(serialized_account_types), 200
