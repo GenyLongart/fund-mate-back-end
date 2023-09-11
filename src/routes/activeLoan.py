@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from marshmallow import ValidationError
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from schemas.activeLoan.activeLoanSchema import ActiveLoanSchema
+from schemas.activeLoanTransaction.activeLoanSchema import ActiveLoanSchema
 from services.user.user_service import UserService
 
 bp = Blueprint('activeLoan', __name__)

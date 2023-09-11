@@ -16,6 +16,13 @@ class UserService:
             return User.query.filter_by(userID=lender.userID).first()
         else:
             raise Exception("error: No such Lender ID")
+        
+    def get_user_from_debtor_id(self, _debtorID):
+        debtor = Debtor.query.filter_by(debtorID=_debtorID).first()
+        if debtor:
+            return User.query.filter_by(userID=debtor.userID).first()
+        else:
+            raise Exception("error: No such Debtor ID")   
 
     def username_exists(self, _username):
         # Check if a user with the given username exists

@@ -17,3 +17,4 @@ class LoanAdvertisement(Base):
     paymentFrequency = relationship("PaymentFrequency", back_populates="loanAdvertisements")
     lenderID = Column(Integer, ForeignKey('Lender.lenderID'), nullable=False)
     lender = relationship("Lender", back_populates="loanAdvertisements")
+    loanOffers = relationship("LoanOffer", back_populates="loanAdvertisement")

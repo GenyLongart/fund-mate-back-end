@@ -12,6 +12,7 @@ from routes.activeLoan import bp as activeLoan_bp
 from routes.loans import bp as loans_bp
 from routes.admin import bp as admin_bp
 from routes.lender import bp as lender_bp
+from routes.debtor import bp as debtor_bp
 
 load_dotenv()
 
@@ -45,6 +46,7 @@ app.register_blueprint(activeLoan_bp, url_prefix='/active-loan')
 app.register_blueprint(loans_bp, url_prefix='/loans')
 app.register_blueprint(admin_bp, url_prefix='/admin')
 app.register_blueprint(lender_bp, url_prefix='/lender')
+app.register_blueprint(debtor_bp, url_prefix='/debtor')
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=8081)

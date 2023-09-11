@@ -8,3 +8,4 @@ class Lender(Base):
     lenderID = Column(Integer, primary_key=True, autoincrement=True)
     userID = Column(Integer, ForeignKey('User.userID'), nullable=False)
     loanAdvertisements = relationship("LoanAdvertisement", back_populates="lender")
+    loanOffers = relationship("LoanOffer", back_populates="lender")
