@@ -54,9 +54,10 @@ class DicomSchema(Schema):
         return masterSchema.validate_uploaded_file(in_data, "dicomFile", ["application/pdf", "image/png", "image/jpeg"])
 
 class BankDetailsSchema(Schema):
-    bankID = fields.Int(dump_only=True)
-    bankName = fields.Str(required=True)
+    # bankDetailsID = fields.Int(dump_only=True)
     bankAccountNumber = fields.Str(required=True, validate=validate.Length(min=8, max=8))
+    bankNameID = fields.Int(required=True)
+    accountTypeID = fields.Int(required=True)
     user = fields.Nested('UserSchema', exclude=('bankDetails',), allow_none=True)
     bank = fields.Nested('AccountTypeSchema')
     accountType = fields.Nested('BankSchema')

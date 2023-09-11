@@ -76,8 +76,10 @@ class UserService:
         # include the default profile picture
         new_user.profilePictureLink = uploadImage.getDefaultProfilePicture()
 
+        print(bank_details_data)
         # Create BankDetails, Identity, Lender and Debtor instances and associate them with the new user
         bank_details = BankDetails(**bank_details_data)
+        print(bank_details)
         identity = Identity(**identity_data)
         dicom = Dicom(**dicom_data)
         lender = Lender()
