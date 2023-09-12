@@ -7,4 +7,4 @@ class AccountType(Base):
 
     accountTypeID = Column(Integer, primary_key=True, autoincrement=True)
     accountName = Column(String(30), nullable=False)
-    bankDetails = relationship("BankDetails", back_populates="accountType")
+    bankDetails = relationship("BankDetails", back_populates="accountType", lazy="joined")
