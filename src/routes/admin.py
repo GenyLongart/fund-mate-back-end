@@ -86,7 +86,6 @@ def add_bank():
         return jsonify({"message": "Bank Add Failed: " + str(e)}), 500
     
 @bp.route('/bank', methods=['GET'])
-@jwt_required()
 def get_banks():
     try:
         banks = bank_service.get_all_banks()
@@ -112,7 +111,6 @@ def add_account_type():
         return jsonify({"message": "Account Type Add Failed: " + str(e)}), 500
     
 @bp.route('/account-type', methods=['GET'])
-@jwt_required()
 def get_account_types():
     try:
         account_types = account_type_service.get_all_account_types()
