@@ -31,6 +31,9 @@ Migrate(app, db)
 jwt = JWTManager(app)
 CORS(app)
 
+# Restrict CORS to specific origins
+CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}})
+
 # initialize cloudinary
 cloudinary.config(
     cloud_name=os.getenv('CLOUDINARY_CLOUD_NAME'),
