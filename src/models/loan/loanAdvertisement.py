@@ -10,7 +10,7 @@ class LoanAdvertisement(Base):
     interest = Column(Integer, nullable=False)
     description = Column(String(200))
     dueDate = Column(DateTime(), nullable=False)
-    negotiable = Column(Boolean, nullable=False, unique=True)
+    negotiable = Column(Boolean, nullable=False)
     createdAt = Column(DateTime(), nullable=False)
     updatedAt = Column(DateTime(), nullable=False )
     paymentFrequencyID = Column(Integer, ForeignKey('PaymentFrequency.paymentFrequencyID'), nullable=False)
