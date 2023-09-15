@@ -33,7 +33,6 @@ def add_payment_type():
         return jsonify({"message": "Payment Frequency Type Add Failed: " + str(e)}), 500
     
 @bp.route('/payment-frequencies', methods=['GET'])
-@jwt_required()
 def get_payment_frequency_types():
     try:
         payment_types = payment_frequency_type_service.get_all_payment_frequency_types()
