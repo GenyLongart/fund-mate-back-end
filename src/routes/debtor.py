@@ -115,7 +115,7 @@ def delete_loan_offer(debtor_id, loan_offer_id):
             if current_user_id != user_id:
                 return jsonify({"message": "You are not authorized to delete a loan offer for another user"}), 403
             
-            no_loan_offer = loans_service.deleteLoanOffer(loan_offer_id)
+            no_loan_offer = loans_service.delete_loan_offer(loan_offer_id)
             if no_loan_offer:
                 return jsonify({"message": "loan offer deleted successfully"}), 200
             else:
