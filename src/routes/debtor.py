@@ -62,7 +62,7 @@ def get_all_loans_offers(debtor_id):
 
 @bp.route('/<int:debtor_id>/loan-offers/<int:loan_offer_id>', methods=['PUT'])
 @jwt_required()
-def edit_loan_offer(debtor_id, loan_offer_id):
+def update_loan_offer(debtor_id, loan_offer_id):
     try:
         # Extract the user's ID from the JWT payload
         current_user_id = get_jwt_identity()
@@ -79,8 +79,14 @@ def edit_loan_offer(debtor_id, loan_offer_id):
         loan_offer = loans_service.get_loan_offer(loan_offer_id)
 
         if loan_offer:
+
+            loan_offer_request = request.json
+            loan_offer_request['debtorID'] = debtor_id
+            loan_offer_request['lenderID'] = user.lender.lenderID
+            loan_offer_request['loanAdvertisementID'] = loan_offer.loanAdvertisement.loanAdvertisementID
+
             # Deserialize the incoming JSON data containing bank details
-            loan_offer_data = loan_offer_schema.load(request.json)
+            loan_offer_data = loan_offer_schema.load(loan_offer_request)
             # edit the bank information using the bankService
             loan_offer = loans_service.update_loan_offer(loan_offer, loan_offer_data)
 
