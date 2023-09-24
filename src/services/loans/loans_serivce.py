@@ -18,6 +18,22 @@ class LoansService:
 
         db.session.add(new_loan_offer)
         db.session.commit()
+    
+    def delete_loan_offer(self, loan_offer_id):
+        loan_offer_found = LoanOffer.query.filter_by(loanOfferID=loan_offer_id).first()
+
+        if not loan_offer_found:
+            return False
+        
+        db.session.delete(loan_offer_found)
+        db.session.commit()
+
+        return True
+    
+    def update_loan_offer(self, loan_offer, loan_offer_data):
+        loan_offer = loan_offer_data
+        db.session.commit()
+        return loan_offer
 
     def get_loan_advertisement(self, loan_advertisement_id):
         return LoanAdvertisement.query.filter_by(loanAdvertisementID=loan_advertisement_id).first()
