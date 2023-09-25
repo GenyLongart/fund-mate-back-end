@@ -23,4 +23,15 @@ class OfferStatusTypeService:
             return top_50_offer_types
         else:
             raise Exception(f"Loans Query Error: There are no offer status types in the database")
+    
+    def delete_offer_status_type(self, offer_status_id):
+        offer_status = OfferStatus.query.filter_by(offerStatusID=offer_status_id).first()
+
+        if not offer_status:
+            return False
+        
+        db.session.delete(offer_status)
+        db.session.commit()
+
+        return True
         

@@ -23,4 +23,15 @@ class BankService:
             return top_50_banks
         else:
             raise Exception(f"Admin Query Error: There are no banks in the database")
+    
+    def delete_bank(self, bank_id):
+        bank = Bank.query.filter_by(bankID=bank_id).first()
+
+        if not bank:
+            return False
+        
+        db.session.delete(bank)
+        db.session.commit()
+
+        return True
         
