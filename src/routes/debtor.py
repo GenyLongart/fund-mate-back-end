@@ -60,6 +60,29 @@ def get_all_loans_offers(debtor_id):
         return jsonify({"message": "Loan Offers By Debtor get failed: " + str(e)}), 500
 
 
+@bp.route('/<int:debtor_id>/loan-offers/<int:loan_offer_id>', methods=['GET'])
+@jwt_required()
+def get_loan_offer(debtor_id, loan_offer_id):
+    try:
+        with db_utils.session_scope() as session:
+            # Extract the user's ID from the JWT payload
+            current_user_id = get_jwt_identity()
+            # we need to get user id from the debtor id. They should be the same but this is an extra check 
+            user = user_service.get_user_from_debtor_id(debtor_id)
+            user_id = user.userID
+
+            # Check if the current user's ID matches the user_id in the URL
+            if current_user_id != user_id:
+                return jsonify({"message": "You are not authorized to get a loan offer for another user"}), 403
+            
+            loan_offer = loans_service.get_loan_offer(loan_offer_id)
+            serialized_loan_offer = LoanOfferSingleSchema().dump(loan_offer)
+            return jsonify(serialized_loan_offer), 200
+        
+    except Exception as e:
+        return jsonify({"message": "Loan Offers By Debtor get failed: " + str(e)}), 500
+    
+
 @bp.route('/<int:debtor_id>/loan-offers/<int:loan_offer_id>', methods=['PUT'])
 @jwt_required()
 def update_loan_offer(debtor_id, loan_offer_id):
@@ -115,7 +138,7 @@ def delete_loan_offer(debtor_id, loan_offer_id):
             if current_user_id != user_id:
                 return jsonify({"message": "You are not authorized to delete a loan offer for another user"}), 403
             
-            no_loan_offer = loans_service.deleteLoanOffer(loan_offer_id)
+            no_loan_offer = loans_service.delete_loan_offer(loan_offer_id)
             if no_loan_offer:
                 return jsonify({"message": "loan offer deleted successfully"}), 200
             else:
