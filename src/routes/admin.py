@@ -44,7 +44,19 @@ def get_payment_frequency_types():
 
     except Exception as e:
         return jsonify({"message": "Payment Frequency Type Get Failed: " + str(e)}), 500
-    
+
+@bp.route('/payment-frequencies/<int:payment_frequency_id>', methods=['DELETE'])
+def delete_payment_frequency(payment_frequency_id):
+    try:
+        no_payment_frequency = payment_frequency_type_service.delete_payment_frequency_type(payment_frequency_id)
+        if no_payment_frequency:
+            return jsonify({"message": "Payment Frequency Deleted Successfully"}), 200
+        else:
+            return jsonify({"message": "Payment Frequency does not exist to delete"}), 404
+
+    except Exception as e:
+        return jsonify({"message": "Payment Frequency Type Delete Failed: " + str(e)}), 500
+
 @bp.route('/offer-status', methods=['POST'])
 @jwt_required()
 def add_offer_status_type():
@@ -70,8 +82,19 @@ def get_offer_status_types():
 
     except Exception as e:
         return jsonify({"message": "Offer Status Type Get Failed: " + str(e)}), 500
-    
 
+@bp.route('/offer-status/<int:offer_status_id>', methods=['DELETE'])
+def delete_offer_status(offer_status_id):
+    try:
+        no_offer_status = offer_status_type_service.delete_offer_status_type(offer_status_id)
+        if no_offer_status:
+            return jsonify({"message": "Offer Status Deleted Successfully"}), 200
+        else:
+            return jsonify({"message": "Offer Status does not exist to delete"}), 404
+
+    except Exception as e:
+        return jsonify({"message": "Offer Status Type Delete Failed: " + str(e)}), 500
+    
 @bp.route('/bank', methods=['POST'])
 @jwt_required()
 def add_bank():
@@ -97,6 +120,18 @@ def get_banks():
     except Exception as e:
         return jsonify({"message": "Bank Get Failed: " + str(e)}), 500
     
+@bp.route('/bank/<int:bank_id>', methods=['DELETE'])
+def delete_bank(bank_id):
+    try:
+        no_bank = bank_service.delete_bank(bank_id)
+        if no_bank:
+            return jsonify({"message": "Bank Deleted Successfully"}), 200
+        else:
+            return jsonify({"message": "Bank does not exist to delete"}), 404
+
+    except Exception as e:
+        return jsonify({"message": "Bank Delete Failed: " + str(e)}), 500
+    
 @bp.route('/account-type', methods=['POST'])
 @jwt_required()
 def add_account_type():
@@ -121,4 +156,16 @@ def get_account_types():
 
     except Exception as e:
         return jsonify({"message": "Account Type Get Failed: " + str(e)}), 500
+    
+@bp.route('/account-type/<int:account_type_id>', methods=['DELETE'])
+def delete_account_type(account_type_id):
+    try:
+        no_account_type = account_type_service.delete_account_type(account_type_id)
+        if no_account_type:
+            return jsonify({"message": "Account Type Deleted Successfully"}), 200
+        else:
+            return jsonify({"message": "Account Type does not exist to delete"}), 404
+
+    except Exception as e:
+        return jsonify({"message": "Account Type Delete Failed: " + str(e)}), 500
     

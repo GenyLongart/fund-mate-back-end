@@ -23,4 +23,15 @@ class PaymentFrequencyTypeService:
             return top_50_payment_types
         else:
             raise Exception(f"Loans Query Error: There are no payment frequency types in the database")
+    
+    def delete_payment_frequency_type(self, payment_frequency_id):
+        payment_frequency = PaymentFrequency.query.filter_by(paymentFrequencyID=payment_frequency_id).first()
+
+        if not payment_frequency:
+            return False
+        
+        db.session.delete(payment_frequency)
+        db.session.commit()
+
+        return True
         

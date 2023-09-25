@@ -24,3 +24,14 @@ class AccountTypeService:
         else:
             raise Exception(f"Admin Query Error: There are no account types in the database")
         
+    def delete_account_type(self, account_type_id):
+        account_type = AccountType.query.filter_by(accountTypeID=account_type_id).first()
+
+        if not account_type:
+            return False
+        
+        db.session.delete(account_type)
+        db.session.commit()
+
+        return True
+        
